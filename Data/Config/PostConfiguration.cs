@@ -1,23 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using BlogAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BlogAPI.Data
+namespace BlogAPI.Data.Config
 {
-    public class BlogDbContext : DbContext
+    public class PostConfiguration : IEntityTypeConfiguration<Post>
     {
-        public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
+        public void Configure(EntityTypeBuilder<Post> builder)
         {
-            
-        }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.Entity<Post>().HasData(
+            builder.HasData(
                 new Post {Id = 1, Author = "Oscar Montenegro", Title = "My first Post", Body = "Hello world, this is my first post"},
                 new Post {Id = 2, Author = "Oscar Montenegro", Title = "My second Post", Body = "Hello world, this is my second post"}
             );
         }
-
-        public DbSet<Post> Posts { get; set; }
     }
 }
