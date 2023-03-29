@@ -74,3 +74,13 @@ C:\Users\Osempu\source\repos\unitCoding\BlogAPI\obj\Debug\net7.0\refint\BlogAPI.
 C:\Users\Osempu\source\repos\unitCoding\BlogAPI\obj\Debug\net7.0\BlogAPI.pdb
 C:\Users\Osempu\source\repos\unitCoding\BlogAPI\obj\Debug\net7.0\BlogAPI.genruntimeconfig.cache
 C:\Users\Osempu\source\repos\unitCoding\BlogAPI\obj\Debug\net7.0\ref\BlogAPI.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.AspNetCore.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.Extensions.Hosting.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.Extensions.Logging.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.Formatting.Compact.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.Settings.Configuration.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.Sinks.Console.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.Sinks.Debug.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.Sinks.File.dll
+C:\Users\Osempu\source\repos\unitCoding\BlogAPI\bin\Debug\net7.0\Serilog.Enrichers.Thread.dll
