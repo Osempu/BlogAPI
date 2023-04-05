@@ -1,4 +1,5 @@
 using BlogAPI.Data;
+using BlogAPI.Data.Repositories;
 using BlogAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,19 +9,20 @@ namespace BlogAPI.Controllers
     [Route("api/post")]
     public class PostsController : ControllerBase
     {
-        private readonly BlogDbContext context;
-        private readonly ILogger<PostsController> logger;
 
-        public PostsController(BlogDbContext context, ILogger<PostsController> logger)
+        private readonly ILogger<PostsController> logger;
+        private readonly IPostRepository repository;
+
+        public PostsController(IPostRepository repository, ILogger<PostsController> logger)
         {
-            this.context = context;
             this.logger = logger;
+            this.repository = repository;
         }
 
         [HttpGet]
         public IActionResult GetPost()
         {
-            var posts = context.Posts.ToList();
+            var posts = repository.GetPost();
             logger.LogDebug($"Get method called, got {posts.Count()} results");
             return Ok(posts);
         }
@@ -30,7 +32,7 @@ namespace BlogAPI.Controllers
         {
             try
             {
-                var post = context.Posts.Find(id);
+                var post = repository.GetPost(id);
                 return Ok(post);
             }
             catch (Exception ex)
@@ -45,9 +47,7 @@ namespace BlogAPI.Controllers
         {
             try
             {
-                context.Add(post);
-                context.SaveChanges();
-
+                repository.Add(post);
                 return CreatedAtAction(nameof(GetPost), new { id = post.Id }, null);
             }
             catch (Exception ex)
@@ -58,22 +58,9 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult EditPost(int id, [FromBody] Post post)
+        public IActionResult EditPost([FromBody] Post post)
         {
-            var postToEdit = context.Posts.Find(id);
-
-            if (postToEdit is null)
-            {
-                logger.LogError($"Post with id {id} was not found");
-                throw new NullReferenceException("Post with id {id} was not found");
-            }
-
-            postToEdit.Title = post.Title;
-            postToEdit.Body = post.Body;
-            postToEdit.Author = post.Author;
-
-            context.SaveChanges();
-
+            repository.Edit(post);
             return NoContent();
         }
 
@@ -82,9 +69,7 @@ namespace BlogAPI.Controllers
         {
             try
             {
-                var post = context.Posts.Find(id);
-                context.Posts.Remove(post);
-                context.SaveChanges();
+                repository.Delete(id);
 
                 return NoContent();
             }

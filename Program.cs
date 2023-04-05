@@ -1,4 +1,5 @@
 using BlogAPI.Data;
+using BlogAPI.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Formatting.Compact;
@@ -21,6 +22,8 @@ builder.Host.UseSerilog();
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddTransient<IPostRepository, PostRepository>();
 
 builder.Services.AddDbContext<BlogDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
