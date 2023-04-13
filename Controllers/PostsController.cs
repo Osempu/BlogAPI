@@ -1,5 +1,7 @@
+using AutoMapper;
 using BlogAPI.Data;
 using BlogAPI.Data.Repositories;
+using BlogAPI.DTOs;
 using BlogAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +14,12 @@ namespace BlogAPI.Controllers
 
         private readonly ILogger<PostsController> logger;
         private readonly IPostRepository repository;
+        private readonly IMapper mapper;
 
-        public PostsController(IPostRepository repository, ILogger<PostsController> logger)
+        public PostsController(IPostRepository repository, ILogger<PostsController> logger,
+         IMapper mapper)
         {
+            this.mapper = mapper;
             this.logger = logger;
             this.repository = repository;
         }
@@ -23,8 +28,10 @@ namespace BlogAPI.Controllers
         public IActionResult GetPost()
         {
             var posts = repository.GetPost();
-            logger.LogDebug($"Get method called, got {posts.Count()} results");
-            return Ok(posts);
+            var postsDto = mapper.Map<IEnumerable<PostDTO>>(posts);
+
+            logger.LogDebug($"Get method called, got {postsDto.Count()} results");
+            return Ok(postsDto);
         }
 
         [HttpGet("{id:int}")]
@@ -33,7 +40,9 @@ namespace BlogAPI.Controllers
             try
             {
                 var post = repository.GetPost(id);
-                return Ok(post);
+                var postDto = mapper.Map<PostDTO>(post);
+
+                return Ok(postDto);
             }
             catch (Exception ex)
             {
