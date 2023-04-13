@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using BlogAPI.Data;
 using BlogAPI.Data.Repositories;
@@ -28,8 +29,7 @@ namespace BlogAPI.Controllers
         public IActionResult GetPost()
         {
             var posts = repository.GetPost();
-            var postsDto = mapper.Map<IEnumerable<PostDTO>>(posts);
-
+            var postsDto = mapper.Map<IEnumerable<PostResponseDTO>>(posts);
             logger.LogDebug($"Get method called, got {postsDto.Count()} results");
             return Ok(postsDto);
         }
@@ -40,7 +40,7 @@ namespace BlogAPI.Controllers
             try
             {
                 var post = repository.GetPost(id);
-                var postDto = mapper.Map<PostDTO>(post);
+                var postDto = mapper.Map<PostResponseDTO>(post);
 
                 return Ok(postDto);
             }
@@ -52,12 +52,19 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePost(Post post)
+        public IActionResult CreatePost(AddPostDTO addPostDTO)
         {
             try
             {
-                repository.Add(post);
-                return CreatedAtAction(nameof(GetPost), new { id = post.Id }, null);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var newPost = mapper.Map<AddPostDTO, Post>(addPostDTO);
+                newPost.CreatedDate = DateTime.Now;
+                repository.Add(newPost);
+                return CreatedAtAction(nameof(GetPost), new { id = newPost.Id }, null);
             }
             catch (Exception ex)
             {
@@ -67,10 +74,25 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult EditPost([FromBody] Post post)
+        public IActionResult EditPost([FromBody] EditPostDTO editPostDto)
         {
-            repository.Edit(post);
-            return NoContent();
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                var post = mapper.Map<EditPostDTO, Post>(editPostDto);
+
+                post.LastUpdated = DateTime.Now;
+                repository.Edit(post);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unexpected error on Put(Edit) Method");
+                throw;
+            }
         }
 
         [HttpDelete("{id:int}")]

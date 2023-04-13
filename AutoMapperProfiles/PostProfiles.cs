@@ -8,7 +8,9 @@ namespace BlogAPI.AutoMapperProfiles
     {
         public PostProfiles()
         {
-            CreateMap<Post, PostDTO>();
+            CreateMap<AddPostDTO, Post>();
+            CreateMap<EditPostDTO, Post>();
+            CreateMap<Post, PostResponseDTO>();
         }
     }
 }
