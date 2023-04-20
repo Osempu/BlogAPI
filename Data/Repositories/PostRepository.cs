@@ -11,34 +11,34 @@ namespace BlogAPI.Data.Repositories
             this.context = context;
         }
 
-        public void Add(Post post)
+        public async Task AddAsync(Post post)
         {
             context.Add(post);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             var post = context.Posts.Find(id);
             context.Remove(post);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void Edit(Post post)
+        public async Task EditAsync(Post post)
         {
             context.Entry(post).State = EntityState.Modified;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Post> GetPost()
+        public async Task<IEnumerable<Post>> GetPostAsync()
         {
-            var allPosts = context.Posts.ToList();
+            var allPosts = await context.Posts.ToListAsync();
             return allPosts;
         }
 
-        public Post GetPost(int id)
+        public async Task<Post> GetPostAsync(int id)
         {
-            var post = context.Posts.Find(id);
+            var post = await context.Posts.FindAsync(id);
             return post;
         }
     }

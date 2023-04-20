@@ -4,10 +4,10 @@ namespace BlogAPI.Data.Repositories
 {
     public interface IPostRepository 
     {
-        IEnumerable<Post> GetPost();
-        Post GetPost(int id);
-        void Add(Post post);
-        void Edit(Post post);
-        void Delete(int id);
+        Task<IEnumerable<Post>> GetPostAsync();
+        Task<Post> GetPostAsync(int id);
+        Task AddAsync(Post post);
+        Task EditAsync(Post post);
+        Task DeleteAsync(int id);
     }
 }

@@ -26,20 +26,20 @@ namespace BlogAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPost()
+        public async Task<IActionResult> GetPost()
         {
-            var posts = repository.GetPost();
+            var posts = await repository.GetPostAsync();
             var postsDto = mapper.Map<IEnumerable<PostResponseDTO>>(posts);
             logger.LogDebug($"Get method called, got {postsDto.Count()} results");
             return Ok(postsDto);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetPost(int id)
+        public async Task<IActionResult> GetPost(int id)
         {
             try
             {
-                var post = repository.GetPost(id);
+                var post = await repository.GetPostAsync(id);
                 var postDto = mapper.Map<PostResponseDTO>(post);
 
                 return Ok(postDto);
@@ -52,7 +52,7 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePost(AddPostDTO addPostDTO)
+        public async Task<IActionResult> CreatePost(AddPostDTO addPostDTO)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace BlogAPI.Controllers
 
                 var newPost = mapper.Map<AddPostDTO, Post>(addPostDTO);
                 newPost.CreatedDate = DateTime.Now;
-                repository.Add(newPost);
+                await repository.AddAsync(newPost);
                 return CreatedAtAction(nameof(GetPost), new { id = newPost.Id }, null);
             }
             catch (Exception ex)
@@ -74,7 +74,7 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult EditPost([FromBody] EditPostDTO editPostDto)
+        public async Task<IActionResult> EditPost([FromBody] EditPostDTO editPostDto)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace BlogAPI.Controllers
                 var post = mapper.Map<EditPostDTO, Post>(editPostDto);
 
                 post.LastUpdated = DateTime.Now;
-                repository.Edit(post);
+                await repository.EditAsync(post);
                 return NoContent();
             }
             catch (Exception ex)
@@ -96,11 +96,11 @@ namespace BlogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeletePost(int id)
+        public async Task<IActionResult> DeletePost(int id)
         {
             try
             {
-                repository.Delete(id);
+                await repository.DeleteAsync(id);
 
                 return NoContent();
             }
