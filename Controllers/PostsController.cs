@@ -26,10 +26,12 @@ namespace BlogAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPost()
+        public async Task<IActionResult> GetPost([FromQuery] QueryParameters parameters)
         {
-            var posts = await repository.GetPostAsync();
+            var posts = await repository.GetPostAsync(parameters.PageSize, parameters.PageNumber);
+
             var postsDto = mapper.Map<IEnumerable<PostResponseDTO>>(posts);
+
             logger.LogDebug($"Get method called, got {postsDto.Count()} results");
             return Ok(postsDto);
         }

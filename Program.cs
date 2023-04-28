@@ -1,12 +1,9 @@
-using System.Reflection;
-using BlogAPI.Data;
+using Microsoft.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
 using BlogAPI.Data.Repositories;
 using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.EntityFrameworkCore;
+using BlogAPI.Data;
 using Serilog;
-using Serilog.Formatting.Compact;
-using Serilog.Formatting.Json;
 
 //Serilog setup
 Log.Logger = new LoggerConfiguration()

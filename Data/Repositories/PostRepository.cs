@@ -30,10 +30,16 @@ namespace BlogAPI.Data.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Post>> GetPostAsync()
+        public async Task<IEnumerable<Post>> GetPostAsync(int pageSize, int pageNumber)
         {
-            var allPosts = await context.Posts.ToListAsync();
-            return allPosts;
+            var allPosts = context.Posts.AsQueryable();
+
+            var pagedPosts = await allPosts
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+            return pagedPosts;
         }
 
         public async Task<Post> GetPostAsync(int id)
