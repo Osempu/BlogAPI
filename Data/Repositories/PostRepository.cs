@@ -30,13 +30,19 @@ namespace BlogAPI.Data.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Post>> GetPostAsync(int pageSize, int pageNumber)
+        public async Task<IEnumerable<Post>> GetPostAsync(QueryParameters parameters)
         {
             var allPosts = context.Posts.AsQueryable();
 
+            //Filter by Author
+            if(!string.IsNullOrEmpty(parameters.Author))
+            {
+                allPosts = allPosts.Where(x => x.Author == parameters.Author);
+            }
+
             var pagedPosts = await allPosts
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
+                    .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                    .Take(parameters.PageSize)
                     .ToListAsync();
 
             return pagedPosts;

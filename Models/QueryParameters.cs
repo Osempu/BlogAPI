@@ -10,5 +10,8 @@ namespace BlogAPI.Models
             get { return pageSize; }
             set { pageSize = (value > maxPageSize) ? maxPageSize : value; }
         }
+
+        //Filtering params
+        public string Author { get; set; } = string.Empty;
     }
 }

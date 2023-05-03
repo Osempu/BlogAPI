@@ -4,7 +4,7 @@ namespace BlogAPI.Data.Repositories
 {
     public interface IPostRepository 
     {
-        Task<IEnumerable<Post>> GetPostAsync(int pageSize, int pageNumbe);
+        Task<IEnumerable<Post>> GetPostAsync(QueryParameters parameters);
         Task<Post> GetPostAsync(int id);
         Task AddAsync(Post post);
         Task EditAsync(Post post);

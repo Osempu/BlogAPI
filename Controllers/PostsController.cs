@@ -28,7 +28,7 @@ namespace BlogAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPost([FromQuery] QueryParameters parameters)
         {
-            var posts = await repository.GetPostAsync(parameters.PageSize, parameters.PageNumber);
+            var posts = await repository.GetPostAsync(parameters);
 
             var postsDto = mapper.Map<IEnumerable<PostResponseDTO>>(posts);
 
