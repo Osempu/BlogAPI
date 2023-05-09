@@ -13,5 +13,9 @@ namespace BlogAPI.Models
 
         //Filtering params
         public string Author { get; set; } = string.Empty;
+
+        //Sorting params
+        public string OrderBy { get; set; } = string.Empty;
+        public bool OrderAsc { get; set; } = true;
     }
 }
