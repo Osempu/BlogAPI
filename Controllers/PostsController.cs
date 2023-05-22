@@ -1,10 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using BlogAPI.Data;
-using BlogAPI.Data.Repositories;
 using BlogAPI.DTOs;
 using BlogAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using BlogAPI.Data.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace BlogAPI.Controllers
 {
@@ -84,6 +83,7 @@ namespace BlogAPI.Controllers
                 {
                     return BadRequest();
                 }
+
                 var post = mapper.Map<EditPostDTO, Post>(editPostDto);
 
                 post.LastUpdated = DateTime.Now;
@@ -111,6 +111,22 @@ namespace BlogAPI.Controllers
                 logger.LogError(ex, $"Unexpected error on Delete method trying to delete post with Id {id}");
                 throw;
             }
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult> PatchPost(int id, [FromBody] JsonPatchDocument<Post> doc)
+        {
+            var post = await repository.GetPostAsync(id);
+
+            if(post is null)
+            {
+                return NotFound();
+            }
+
+            doc.ApplyTo(post);
+            await repository.EditAsync(post);
+
+            return NoContent();
         }
     }
 }
