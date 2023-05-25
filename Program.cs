@@ -4,6 +4,7 @@ using BlogAPI.Data.Repositories;
 using FluentValidation;
 using BlogAPI.Data;
 using Serilog;
+using BlogAPI.Filters;
 
 //Serilog setup
 Log.Logger = new LoggerConfiguration()
@@ -23,7 +24,7 @@ builder.Host.UseSerilog();
 
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
-
+                
 builder.Services.AddTransient<IPostRepository, PostRepository>();
 
 builder.Services.AddDbContext<BlogDbContext>(options => 
@@ -32,6 +33,7 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

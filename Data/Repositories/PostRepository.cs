@@ -59,7 +59,7 @@ namespace BlogAPI.Data.Repositories
 
         public async Task<Post> GetPostAsync(int id)
         {
-            var post = await context.Posts.FindAsync(id);
+            var post = await context.Posts.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
             return post;
         }
     }

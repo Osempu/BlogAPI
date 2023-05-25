@@ -7,12 +7,10 @@ namespace BlogAPI.Data
     {
         public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
         {
-            
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
         }
 
         public DbSet<Post> Posts { get; set; }

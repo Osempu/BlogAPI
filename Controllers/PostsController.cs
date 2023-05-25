@@ -4,6 +4,7 @@ using BlogAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlogAPI.Data.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
+using BlogAPI.Filters;
 
 namespace BlogAPI.Controllers
 {
@@ -36,6 +37,7 @@ namespace BlogAPI.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [PostExists]
         public async Task<IActionResult> GetPost(int id)
         {
             try
@@ -74,8 +76,9 @@ namespace BlogAPI.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditPost([FromBody] EditPostDTO editPostDto)
+        [HttpPut("{id:int}")]
+        [PostExists]
+        public async Task<IActionResult> EditPost(int id, [FromBody] EditPostDTO editPostDto)
         {
             try
             {
@@ -98,6 +101,7 @@ namespace BlogAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [PostExists]
         public async Task<IActionResult> DeletePost(int id)
         {
             try
@@ -114,14 +118,10 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPatch("{id:int}")]
+        [PostExists]
         public async Task<ActionResult> PatchPost(int id, [FromBody] JsonPatchDocument<Post> doc)
         {
             var post = await repository.GetPostAsync(id);
-
-            if(post is null)
-            {
-                return NotFound();
-            }
 
             doc.ApplyTo(post);
             await repository.EditAsync(post);
