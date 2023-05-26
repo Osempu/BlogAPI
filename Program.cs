@@ -26,6 +26,8 @@ builder.Services.AddControllers()
                 .AddNewtonsoftJson();
                 
 builder.Services.AddTransient<IPostRepository, PostRepository>();
+builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
+builder.Services.AddTransient<ITagRepository, TagRepository>();
 
 builder.Services.AddDbContext<BlogDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));

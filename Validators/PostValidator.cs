@@ -19,7 +19,6 @@ namespace BlogAPI.Validators
 
             RuleFor(x => x.Author)
                     .NotEmpty()
-                    .MaximumLength(100)
                     .WithMessage("The name of the author cannot exceed 100 characters");
         }
     }

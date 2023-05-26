@@ -14,5 +14,7 @@ namespace BlogAPI.Data
         }
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace BlogAPI.Data.Repositories
             //Filter by Author
             if(!string.IsNullOrEmpty(parameters.Author))
             {
-                allPosts = allPosts.Where(x => x.Author == parameters.Author);
+                allPosts = allPosts.Where(x => x.Author.Name == parameters.Author);
             }
 
             //Sort posts

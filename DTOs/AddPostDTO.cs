@@ -1,4 +1,6 @@
+using BlogAPI.Models;
+
 namespace BlogAPI.DTOs
 {
-    public record AddPostDTO(string Title, string Body, string Author);
+    public record AddPostDTO(string Title, string Body, int AuthorId);
 }
