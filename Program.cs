@@ -5,6 +5,7 @@ using FluentValidation;
 using BlogAPI.Data;
 using Serilog;
 using BlogAPI.Filters;
+using Newtonsoft.Json;
 
 //Serilog setup
 Log.Logger = new LoggerConfiguration()
@@ -23,13 +24,13 @@ builder.Host.UseSerilog();
 // Add services to the container.
 
 builder.Services.AddControllers()
-                .AddNewtonsoftJson();
-                
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
 builder.Services.AddTransient<IPostRepository, PostRepository>();
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<ITagRepository, TagRepository>();
 
-builder.Services.AddDbContext<BlogDbContext>(options => 
+builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);

@@ -8,6 +8,7 @@ namespace BlogAPI.AutoMapperProfiles
     {
         public TagProfiles()
         {
+            CreateMap<Tag, TagOnlyResponseDto>();
             CreateMap<AddTagDto, Tag>();
             CreateMap<UpdateTagDto, Tag>();
         }

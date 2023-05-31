@@ -38,7 +38,10 @@ namespace BlogAPI.Data.Repositories
 
         public async Task<Author> GetAsync(int id)
         {
-            return await context.Authors.AsNoTracking().SingleOrDefaultAsync(a => a.Id == id);
+            var author = await context.Authors.AsNoTracking()
+                                                .Where(x => x.Id == id)
+                                                .FirstOrDefaultAsync();
+            return author;
         }
     }
 }

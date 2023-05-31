@@ -33,7 +33,7 @@ namespace BlogAPI.Data.Repositories
 
         public async Task<IEnumerable<Post>> GetPostAsync(QueryParameters parameters)
         {
-            var allPosts = context.Posts.AsQueryable();
+            var allPosts = context.Posts.AsNoTracking().AsQueryable();
 
             //Filter by Author
             if(!string.IsNullOrEmpty(parameters.Author))
@@ -52,6 +52,8 @@ namespace BlogAPI.Data.Repositories
             var pagedPosts = await allPosts
                     .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                     .Take(parameters.PageSize)
+                    .Include(x => x.Author)
+                    .Include(x => x.Tags)
                     .ToListAsync();
 
             return pagedPosts;
@@ -59,8 +61,33 @@ namespace BlogAPI.Data.Repositories
 
         public async Task<Post> GetPostAsync(int id)
         {
-            var post = await context.Posts.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+            var post = await context.Posts.AsNoTracking()
+                                            .Where(x => x.Id == id)
+                                            .Include(x => x.Author)
+                                            .Include(x => x.Tags)
+                                            .FirstOrDefaultAsync();
             return post;
+        }
+
+        public async Task<IEnumerable<Post>> GetPostByAuthorId(int id)
+        {
+            var posts = await context.Posts.AsNoTracking()
+                                            .Where(x => x.AuthorId == id)
+                                            .Include(x => x.Author)
+                                            .Include(x => x.Tags)
+                                            .ToListAsync();
+            return posts;
+        }
+
+        public async Task<IEnumerable<Post>> GetPostByTagId(int id)
+        {
+            var posts = await context.Posts.AsNoTracking()
+                                            .Include(x => x.Author)
+                                            .Include(x => x.Tags)
+                                            .Where(x => x.Tags.Any(t => t.Id == id))
+                                            .ToListAsync();
+
+            return posts;
         }
     }
 }

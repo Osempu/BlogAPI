@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using BlogAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,7 +38,7 @@ namespace BlogAPI.Data.Repositories
 
         public async Task<Tag> GetAsync(int id)
         {
-            return await context.Tags.FindAsync(id);
+            return await context.Tags.SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

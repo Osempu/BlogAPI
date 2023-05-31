@@ -11,11 +11,13 @@ namespace BlogAPI.Controllers
     public class TagsController : ControllerBase
     {
         private readonly ITagRepository repository;
+        private readonly IPostRepository postRepository;
         private readonly IMapper mapper;
 
-        public TagsController(ITagRepository repository, IMapper mapper)
+        public TagsController(ITagRepository repository, IPostRepository postRepository ,IMapper mapper)
         {
             this.repository = repository;
+            this.postRepository = postRepository;
             this.mapper = mapper;
         }
 
@@ -23,14 +25,24 @@ namespace BlogAPI.Controllers
         public async Task<IActionResult> GetTag()
         {
             var tags = await repository.GetAsync();
-            return Ok(tags);
+            var tagsDto = mapper.Map<IEnumerable<TagOnlyResponseDto>>(tags);
+            return Ok(tagsDto);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetTag(int id)
         {
             var tag = await repository.GetAsync(id);
-            return Ok(tag);
+            var tagDto = mapper.Map<TagOnlyResponseDto>(tag);
+            return Ok(tagDto);
+        }
+
+        [HttpGet("{id:int}/posts")]
+        public async Task<IActionResult> GetPostFromTagId(int id)
+        {
+            var posts = await postRepository.GetPostByTagId(id);
+            var postsDto = mapper.Map<IEnumerable<PostResponseDTO>>(posts);
+            return Ok(postsDto);
         }
 
         [HttpPost]

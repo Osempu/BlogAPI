@@ -10,6 +10,9 @@ namespace BlogAPI.AutoMapperProfiles
         {
             CreateMap<AddAuthorDto, Author>();
             CreateMap<UpdateAuthorDto, Author>();
+
+            CreateMap<Author, AuthorResponseDto>();
+            CreateMap<Author, AuthorOnlyResponseDto>();
         }
     }
 }

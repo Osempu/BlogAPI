@@ -11,11 +11,13 @@ namespace BlogAPI.Controllers
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorRepository repository;
+        private readonly IPostRepository postRepository;
         private readonly IMapper mapper;
 
-        public AuthorsController(IAuthorRepository repository, IMapper mapper)
+        public AuthorsController(IAuthorRepository repository, IPostRepository postRepository, IMapper mapper)
         {
             this.repository = repository;
+            this.postRepository = postRepository;
             this.mapper = mapper;
         }
 
@@ -23,14 +25,25 @@ namespace BlogAPI.Controllers
         public async Task<IActionResult> GetAuthor()
         {
             var authors = await repository.GetAsync();
-            return Ok(authors);
+            var authorsDto = mapper.Map<IEnumerable<AuthorOnlyResponseDto>>(authors);
+            return Ok(authorsDto);
         }
 
-        [HttpGet("id:int")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAuthor(int id)
         {
             var author = await repository.GetAsync(id);
-            return Ok(author);
+            var authorDto = mapper.Map<AuthorOnlyResponseDto>(author);
+            return Ok(authorDto);
+        }
+
+        [HttpGet("{id:int}/posts")]
+        public async Task<IActionResult> GetPostByAuthorId(int id)
+        {
+            var posts = await postRepository.GetPostByAuthorId(id);
+            var postDto = mapper.Map<IEnumerable<PostResponseDTO>>(posts);
+
+            return Ok(postDto);
         }
 
         [HttpPost]
