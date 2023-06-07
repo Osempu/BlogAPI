@@ -19,6 +19,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="RiskFirst.Hateoas" Version="3.1.1" />
     <PackageReference Include="serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="serilog.sinks.console" Version="4.1.0" />
